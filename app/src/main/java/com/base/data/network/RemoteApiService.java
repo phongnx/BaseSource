@@ -1,4 +1,4 @@
-package com.base.data.remote;
+package com.base.data.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

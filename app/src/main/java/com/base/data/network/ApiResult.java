@@ -1,4 +1,4 @@
-package com.base.data.models;
+package com.base.data.network;
 
 /**
  * Created by Phong on 11/9/2016.

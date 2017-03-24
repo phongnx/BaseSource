@@ -1,4 +1,4 @@
-package com.base.ui.main.view;
+package com.base.ui.main;
 
 
 import com.base.ui.base.BaseMvpView;

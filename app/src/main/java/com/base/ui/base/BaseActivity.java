@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.base.R;
 import com.base.utils.Utils;
 
 
@@ -126,6 +127,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return;
         }
-//        overridePendingTransition(R.anim.slide_in_from_right, R.anim.fade_out);
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.fade_out);
     }
 }

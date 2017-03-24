@@ -14,6 +14,7 @@ import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import static com.base.utils.CheckPermissions.RequestCodePermission.REQUEST_CODE_ENABLE_NOTIFICATION;
 import static com.base.utils.CheckPermissions.RequestCodePermission.REQUEST_CODE_GRANT_BLUETOOTH_PERMISSIONS;
 import static com.base.utils.CheckPermissions.RequestCodePermission.REQUEST_CODE_GRANT_CAMERA_PERMISSIONS;
 import static com.base.utils.CheckPermissions.RequestCodePermission.REQUEST_CODE_GRANT_LOCATION_PERMISSIONS;
@@ -42,6 +43,7 @@ public class CheckPermissions {
         int REQUEST_CODE_GRANT_BLUETOOTH_PERMISSIONS = 1006;
         int REQUEST_CODE_GRANT_CAMERA_PERMISSIONS = 1007;
         int REQUEST_CODE_GRANT_MICRO_PERMISSIONS = 1008;
+        int REQUEST_CODE_ENABLE_NOTIFICATION = 1009;
     }
 
     public static CheckPermissions getInstant() {
@@ -60,7 +62,9 @@ public class CheckPermissions {
     public boolean checkAccessReadContactPermission(Context context) {
         int hasAccessReadContactPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS);
         if (hasAccessReadContactPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACT_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACT_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -75,7 +79,9 @@ public class CheckPermissions {
     public boolean checkAccessWriteContactPermission(Context context) {
         int hasAccessWriteContactPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CONTACTS);
         if (hasAccessWriteContactPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.WRITE_CONTACTS}, REQUEST_CODE_WRITE_CONTACT_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.WRITE_CONTACTS}, REQUEST_CODE_WRITE_CONTACT_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -95,7 +101,9 @@ public class CheckPermissions {
         int hasAccessWriteStoragePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         int hasAccessReadStoragePermission = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
         if (hasAccessWriteStoragePermission != PackageManager.PERMISSION_GRANTED || hasAccessReadStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GRANT_STORAGE_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GRANT_STORAGE_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -112,21 +120,24 @@ public class CheckPermissions {
         int hasAccessFineLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
         int hasAccessCoarseLocationPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
         if (hasAccessFineLocationPermission != PackageManager.PERMISSION_GRANTED || hasAccessCoarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_GRANT_LOCATION_PERMISSIONS);
             return false;
         }
         return true;
+    }
+
+    public void requestLocationPermission(Context context) {
+        if (context instanceof Activity) {
+            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, REQUEST_CODE_GRANT_LOCATION_PERMISSIONS);
+        }
     }
 
     /*
     * Request location service on/off
     * */
     public void requestLocationTurnOn(Context context) {
-        try {
+        if (context instanceof Activity) {
             Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             ((Activity) context).startActivityForResult(myIntent, REQUEST_CODE_SETTINGS_LOCATION);
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), String.valueOf(e));
         }
     }
 
@@ -141,7 +152,9 @@ public class CheckPermissions {
         int hasAccessBluetoothPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH);
         int hasAccessBluetoothAdminPermission = ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_ADMIN);
         if (hasAccessBluetoothPermission != PackageManager.PERMISSION_GRANTED || hasAccessBluetoothAdminPermission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN}, REQUEST_CODE_GRANT_BLUETOOTH_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN}, REQUEST_CODE_GRANT_BLUETOOTH_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -156,7 +169,9 @@ public class CheckPermissions {
     public boolean checkAccessCameraPermission(Context context) {
         int resultCamera = ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA);
         if (resultCamera != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_GRANT_CAMERA_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_GRANT_CAMERA_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -171,7 +186,9 @@ public class CheckPermissions {
     public boolean checkAccessMicroPermission(Context context) {
         int resultMicro = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
         if (resultMicro != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_CODE_GRANT_MICRO_PERMISSIONS);
+            if (context instanceof Activity) {
+                ActivityCompat.requestPermissions(((Activity) context), new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_CODE_GRANT_MICRO_PERMISSIONS);
+            }
             return false;
         }
         return true;
@@ -198,7 +215,11 @@ public class CheckPermissions {
             intent.addCategory(Intent.CATEGORY_DEFAULT);
             intent.setData(Uri.parse("package:" + context.getPackageName()));
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            context.startActivity(intent);
+            if (context instanceof Activity) {
+                ((Activity) context).startActivityForResult(intent, REQUEST_CODE_ENABLE_NOTIFICATION);
+            } else {
+                context.startActivity(intent);
+            }
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), String.valueOf(e));
         }
@@ -220,11 +241,9 @@ public class CheckPermissions {
     }
 
     public void requestOverlayPermission(Context context) {
-        try {
+        if (context instanceof Activity) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context.getPackageName()));
             ((Activity) context).startActivityForResult(intent, RequestCodePermission.REQUEST_CODE_GRANT_OVERLAY_PERMISSIONS);
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), String.valueOf(e));
         }
     }
 }

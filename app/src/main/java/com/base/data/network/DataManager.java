@@ -1,8 +1,8 @@
-package com.base.data;
+package com.base.data.network;
 
 
 import com.base.data.local.preference.PreferencesHelper;
-import com.base.data.remote.RemoteApiService;
+import com.base.data.network.RemoteApiService;
 
 import java.io.File;
 

@@ -1,10 +1,8 @@
-package com.base.ui.main.presenter;
+package com.base.ui.main;
 
 
-import com.base.data.models.ApiResult;
+import com.base.data.network.ApiResult;
 import com.base.ui.base.BasePresenter;
-import com.base.ui.main.models.LoginHelper;
-import com.base.ui.main.view.MainMvpView;
 
 /**
  * Created by Phong on 2/2/2017.

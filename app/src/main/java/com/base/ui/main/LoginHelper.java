@@ -1,11 +1,11 @@
-package com.base.ui.main.models;
+package com.base.ui.main;
 
 import android.os.AsyncTask;
 
 import com.base.data.ApplicationModules;
-import com.base.data.DataManager;
+import com.base.data.network.DataManager;
 import com.base.data.local.preference.PreferencesHelper;
-import com.base.data.models.ApiResult;
+import com.base.data.network.ApiResult;
 
 import org.json.JSONObject;
 

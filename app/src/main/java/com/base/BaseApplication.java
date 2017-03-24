@@ -5,9 +5,11 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.base.data.ApplicationModules;
-import com.base.data.DataManager;
+import com.base.data.network.DataManager;
 import com.base.data.local.preference.PreferencesHelper;
-import com.base.data.remote.RemoteApiService;
+import com.base.data.network.RemoteApiService;
+import com.base.utils.Utils;
+import com.utility.DebugLog;
 
 import retrofit2.Retrofit;
 
@@ -21,36 +23,14 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initModules();
+        DebugLog.DEBUG = Utils.isDebuggable();
+        ApplicationModules.getInstant().initModules(this);
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-    }
-
-    private void initModules() {
-        PreferencesHelper preferencesHelper = providePreferencesHelper(this);
-        DataManager dataManager = provideDataManager(preferencesHelper);
-        ApplicationModules.getInstant().setDataManager(dataManager);
-        ApplicationModules.getInstant().setPreferencesHelper(preferencesHelper);
-    }
-
-    private DataManager provideDataManager(PreferencesHelper preferencesHelper) {
-        return new DataManager(provideRemoteApiService(provideRetrofitInstance()), preferencesHelper);
-    }
-
-    private RemoteApiService provideRemoteApiService(Retrofit retrofit) {
-        return retrofit.create(RemoteApiService.class);
-    }
-
-    private Retrofit provideRetrofitInstance() {
-        return RemoteApiService.Creator.newRetrofitInstance();
-    }
-
-    private PreferencesHelper providePreferencesHelper(Context context) {
-        return new PreferencesHelper(context);
     }
 
 }

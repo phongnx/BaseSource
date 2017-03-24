@@ -5,11 +5,13 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.BuildConfig;
 import com.base.R;
+import com.bumptech.glide.Glide;
 
 import java.util.Random;
 
@@ -94,6 +96,19 @@ public class Utils {
             builder.append(possible.charAt(random.nextInt(possible.length())));
         }
         return builder.toString();
+    }
+
+    public static void loadImageWithGlide(Context context, ImageView imageView, String url, int placeholder) {
+        if (url.isEmpty() || context == null) {
+            return;
+        }
+        Glide.with(context)
+                .load(url)
+                .centerCrop()
+                .error(placeholder)
+                .placeholder(placeholder)
+                .crossFade()
+                .into(imageView);
     }
 
 }

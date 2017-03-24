@@ -15,8 +15,6 @@ import android.view.View;
 
 import com.base.R;
 import com.base.ui.base.BaseActivity;
-import com.base.ui.main.presenter.MainPresenter;
-import com.base.ui.main.view.MainMvpView;
 import com.base.utils.CheckPermissions;
 import com.base.utils.Utils;
 
