@@ -19,14 +19,14 @@ import retrofit2.Response;
  */
 
 public class LoginHelper {
-    private DataManager dataManager;
-    private PreferencesHelper preferencesHelper;
-    private ApiResult apiResult;
+    private DataManager mDataManager;
+    private PreferencesHelper mPreferencesHelper;
+    private ApiResult mApiResult;
 
     public LoginHelper(ApiResult apiResult) {
-        this.apiResult = apiResult;
-        preferencesHelper = ApplicationModules.getInstant().getPreferencesHelper();
-        dataManager = ApplicationModules.getInstant().getDataManager();
+        mApiResult = apiResult;
+        mPreferencesHelper = ApplicationModules.getInstant().getPreferencesHelper();
+        mDataManager = ApplicationModules.getInstant().getDataManager();
     }
 
     public void login(String email, String password, String push_key) {
@@ -37,8 +37,8 @@ public class LoginHelper {
 
                 boolean isSuccess = false;
                 String message = "";
-
                 String resultString = params[0]; // result string from server
+
                 try {
                     JSONObject object = new JSONObject(resultString);
                     int code = object.getInt("code");
@@ -51,7 +51,7 @@ public class LoginHelper {
                 } catch (Exception e) {
                 }
 
-                preferencesHelper.saveUserId("user_id"); // Save user_id or somethings you want to SharedPreferences
+                mPreferencesHelper.saveUserId("user_id"); // Save user_id or somethings you want to SharedPreferences
 
                 results[0] = isSuccess;
                 results[1] = message;
@@ -62,15 +62,17 @@ public class LoginHelper {
             @Override
             protected void onPostExecute(Object[] objects) {
                 super.onPostExecute(objects);
-                if ((Boolean) objects[0]) {
-                    apiResult.onSuccess("");
-                } else {
-                    apiResult.onError(String.valueOf(objects[1]));
+                if (mApiResult != null) {
+                    if ((Boolean) objects[0]) {
+                        mApiResult.onSuccess("");
+                    } else {
+                        mApiResult.onError(String.valueOf(objects[1]));
+                    }
                 }
             }
         }
 
-        Call<ResponseBody> call = dataManager.login(email, password, push_key);
+        Call<ResponseBody> call = mDataManager.login(email, password, push_key);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -81,13 +83,17 @@ public class LoginHelper {
                     } catch (Exception e) {
                     }
                 } else {
-                    apiResult.onError(response.message());
+                    if (mApiResult != null) {
+                        mApiResult.onError(response.message());
+                    }
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                apiResult.onError(t.getMessage());
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                if (mApiResult != null) {
+                    mApiResult.onError(throwable.getMessage());
+                }
             }
         });
     }

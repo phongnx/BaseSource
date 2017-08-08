@@ -5,13 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.base.data.ApplicationModules;
-import com.base.data.network.DataManager;
-import com.base.data.local.preference.PreferencesHelper;
-import com.base.data.network.RemoteApiService;
-import com.base.utils.Utils;
 import com.utility.DebugLog;
-
-import retrofit2.Retrofit;
 
 
 /**
@@ -23,8 +17,8 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DebugLog.DEBUG = Utils.isDebuggable();
-        ApplicationModules.getInstant().initModules(this);
+        DebugLog.DEBUG = BuildConfig.DEBUG;
+        ApplicationModules.getInstant().initModules(getApplicationContext());
     }
 
     @Override

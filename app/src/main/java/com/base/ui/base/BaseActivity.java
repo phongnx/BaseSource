@@ -1,23 +1,20 @@
 package com.base.ui.base;
 
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Fade;
-import android.transition.Slide;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.R;
 import com.base.utils.Utils;
+import com.utility.DebugLog;
 
 
 /**
@@ -25,9 +22,7 @@ import com.base.utils.Utils;
  */
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseMvpView, BaseFragment.Callback {
-
-    private ProgressDialog mProgressDialog;
-
+    private MaterialDialog mProgressDialog;
     private MaterialDialog mAlertDialog;
 
     @Override
@@ -75,13 +70,27 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
     @Override
     public void showLoading() {
         hideLoading();
-        mProgressDialog = Utils.showLoadingDialog(this);
+        try {
+            mProgressDialog = new MaterialDialog.Builder(this)
+                    .content(R.string.lbl_please_wait)
+                    .progress(true, 0)
+                    .show();
+        } catch (Exception e) {
+            DebugLog.loge(e);
+        }
     }
 
     @Override
     public void showLoading(String message) {
         hideLoading();
-        mProgressDialog = Utils.showLoadingDialog(this, message);
+        try {
+            mProgressDialog = new MaterialDialog.Builder(this)
+                    .content(message)
+                    .progress(true, 0)
+                    .show();
+        } catch (Exception e) {
+            DebugLog.loge(e);
+        }
     }
 
     @Override

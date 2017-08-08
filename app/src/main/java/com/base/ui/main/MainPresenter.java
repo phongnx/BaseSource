@@ -9,10 +9,10 @@ import com.base.ui.base.BasePresenter;
  */
 
 public class MainPresenter extends BasePresenter<MainMvpView> implements ApiResult {
-    private LoginHelper loginHelper;
+    private LoginHelper mLoginHelper;
 
     public MainPresenter() {
-        loginHelper = new LoginHelper(this);
+        mLoginHelper = new LoginHelper(this);
     }
 
     public void initData() {
@@ -20,7 +20,7 @@ public class MainPresenter extends BasePresenter<MainMvpView> implements ApiResu
     }
 
     public void login(String email, String password, String push_key) {
-        loginHelper.login(email, password, push_key);
+        mLoginHelper.login(email, password, push_key);
     }
 
     /*

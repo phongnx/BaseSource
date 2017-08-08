@@ -40,7 +40,7 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
     private void init(Context context) {
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
-            this.mActivity = activity;
+            mActivity = activity;
             activity.onFragmentAttached();
         }
     }
@@ -80,6 +80,18 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
         if (mActivity != null) {
             mActivity.hideAlertDialog();
         }
+    }
+
+    @Override
+    public void onPause() {
+    }
+
+    @Override
+    public void onResume() {
+    }
+
+    @Override
+    public void onStop() {
     }
 
     @Override

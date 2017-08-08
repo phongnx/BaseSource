@@ -1,17 +1,13 @@
 package com.base.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.base.BuildConfig;
 import com.base.R;
-import com.bumptech.glide.Glide;
+import com.base.ui.base.GlideApp;
 
 import java.util.Random;
 
@@ -21,13 +17,14 @@ import java.util.Random;
  */
 
 public class Utils {
-    private static ProgressDialog progressDialog;
+    private static MaterialDialog progressDialog;
 
     public static void showProgress(Context context, String message) {
         dismissCurrentDialog();
-        progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(message);
-        progressDialog.show();
+        progressDialog = new MaterialDialog.Builder(context)
+                .content((message == null || message.isEmpty()) ? context.getString(R.string.lbl_please_wait) : message)
+                .progress(true, 0)
+                .show();
     }
 
     public static void dismissCurrentDialog() {
@@ -37,28 +34,6 @@ public class Utils {
             }
             progressDialog = null;
         }
-    }
-
-    public static ProgressDialog showLoadingDialog(Context context) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.show();
-        if (progressDialog.getWindow() != null) {
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        }
-        progressDialog.setContentView(R.layout.layout_progress_dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-        progressDialog.setCanceledOnTouchOutside(false);
-        return progressDialog;
-    }
-
-    public static ProgressDialog showLoadingDialog(Context context, String message) {
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(message);
-        progressDialog.show();
-        progressDialog.setIndeterminate(true);
-        progressDialog.setCancelable(true);
-        return progressDialog;
     }
 
     public static MaterialDialog createAlertDialog(Context context) {
@@ -76,15 +51,6 @@ public class Utils {
         }
     }
 
-    public static boolean isDebuggable() {
-        boolean debuggable = false;
-        try {
-            debuggable = BuildConfig.DEBUG;
-        } catch (Exception e) {
-        }
-        return debuggable;
-    }
-
     @NonNull
     public static String getRandomId() {
         String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -98,16 +64,14 @@ public class Utils {
         return builder.toString();
     }
 
-    public static void loadImageWithGlide(Context context, ImageView imageView, String url, int placeholder) {
-        if (url.isEmpty() || context == null) {
+    public static void loadImageWithGlide(Context context, ImageView imageView, String url, int place_holder) {
+        if (url == null || url.isEmpty() || context == null) {
             return;
         }
-        Glide.with(context)
+        GlideApp.with(context)
                 .load(url)
-                .centerCrop()
-                .error(placeholder)
-                .placeholder(placeholder)
-                .crossFade()
+                .placeholder(place_holder)
+                .centerCrop(context)
                 .into(imageView);
     }
 

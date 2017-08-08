@@ -25,7 +25,7 @@ public abstract class BaseFragment extends Fragment implements BaseMvpView {
         super.onAttach(context);
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
-            this.mActivity = activity;
+            mActivity = activity;
             activity.onFragmentAttached();
         }
     }

@@ -2,6 +2,7 @@ package com.base.ui.main;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -10,17 +11,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 
 import com.base.R;
 import com.base.ui.base.BaseActivity;
-import com.base.utils.CheckPermissions;
 import com.base.utils.Utils;
+import com.utility.RuntimePermissions;
 
-import static com.base.utils.CheckPermissions.RequestCodePermission.REQUEST_CODE_GRANT_STORAGE_PERMISSIONS;
 
-public class MainActivity extends BaseActivity implements MainMvpView, View.OnClickListener{
+public class MainActivity extends BaseActivity implements MainMvpView, View.OnClickListener {
     private Context context;
     private Toolbar toolbar;
     private FloatingActionButton fab;
@@ -48,9 +47,10 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
 
     // Check permission in android 6.0 and above
     public void checkPermissions() {
-        if (CheckPermissions.getInstant().checkAccessStoragePermission(context)) {
-            mainPresenter.initData();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            // Check some permissions in here
         }
+        mainPresenter.initData();
     }
 
     public void initView() {
@@ -109,25 +109,14 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        int grantResult = 0;
-        try {
-            grantResult = grantResults[0];
-        } catch (Exception e) {
-            Log.e(getClass().getSimpleName(), String.valueOf(e));
-        }
         switch (requestCode) {
-            case REQUEST_CODE_GRANT_STORAGE_PERMISSIONS:
-                if (grantResult == PackageManager.PERMISSION_GRANTED) {
+            case RuntimePermissions.RequestCodePermission.REQUEST_CODE_GRANT_STORAGE_PERMISSIONS:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    mainPresenter.initData();
                 } else {
                     // Permission Denied
-                    Utils.showToast(context, getApplicationContext().getString(R.string.lbl_alert_storage_permission_denied));
-                    finish();
                 }
                 break;
-
-            default:
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }

@@ -15,6 +15,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -30,6 +31,9 @@ public interface RemoteApiService {
     Call<ResponseBody> login(@Field("email") String email,
                              @Field("password") String password,
                              @Field("android_push_key") String android_push_key);
+
+    @GET("user/list")
+    Call<ResponseBody> userList();
 
     @FormUrlEncoded
     @Multipart

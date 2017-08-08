@@ -17,10 +17,11 @@ import retrofit2.Retrofit;
 
 public class ApplicationModules {
     private static ApplicationModules applicationModules;
-    private PreferencesHelper preferencesHelper;
-    private RealmHelper realmHelper;
-    private Realm realm;
-    private DataManager dataManager;
+    private Context mContext;
+    private PreferencesHelper mPreferencesHelper;
+    private RealmHelper mRealmHelper;
+    private Realm mRealm;
+    private DataManager mDataManager;
 
     public static ApplicationModules getInstant() {
         if (applicationModules == null) {
@@ -29,20 +30,24 @@ public class ApplicationModules {
         return applicationModules;
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public PreferencesHelper getPreferencesHelper() {
-        return preferencesHelper;
+        return mPreferencesHelper;
     }
 
     public RealmHelper getRealmHelper() {
-        return realmHelper;
+        return mRealmHelper;
     }
 
     public Realm getRealm() {
-        return realm;
+        return mRealm;
     }
 
     public DataManager getDataManager() {
-        return dataManager;
+        return mDataManager;
     }
 
     /*
@@ -51,24 +56,20 @@ public class ApplicationModules {
     */
 
     public void initModules(Context context) {
+        mContext = context;
         Realm.init(context);
         RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+//                .schemaVersion(1) // Must be bumped when the schema changes
+//                .migration(new MyMigration()) // Migration to run instead of throwing an exception
                 .deleteRealmIfMigrationNeeded()
                 .build();
+
         Realm.setDefaultConfiguration(realmConfiguration);
 
-        preferencesHelper = providePreferencesHelper(context);
-        realm = provideRealm();
-        realmHelper = provideRealmHelper(context, realm);
-        dataManager = provideDataManager(preferencesHelper);
-    }
-
-    private Realm provideRealm() {
-        return Realm.getDefaultInstance();
-    }
-
-    private RealmHelper provideRealmHelper(Context context, Realm realm) {
-        return new RealmHelper(context, realm);
+        mPreferencesHelper = new PreferencesHelper(context);
+        mRealm = Realm.getDefaultInstance();
+        mRealmHelper = new RealmHelper(context, mRealm);
+        mDataManager = provideDataManager(mPreferencesHelper);
     }
 
     private DataManager provideDataManager(PreferencesHelper preferencesHelper) {
@@ -86,7 +87,4 @@ public class ApplicationModules {
         return RemoteApiService.Creator.newRetrofitInstance();
     }
 
-    private PreferencesHelper providePreferencesHelper(Context context) {
-        return new PreferencesHelper(context);
-    }
 }

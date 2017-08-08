@@ -9,11 +9,11 @@ import io.realm.Realm;
  */
 
 public class RealmHelper {
-    private final Context context;
-    private final Realm realm;
+    private final Context mContext;
+    private final Realm mRealm;
 
     public RealmHelper(Context context, Realm realm) {
-        this.context = context;
-        this.realm = realm;
+        this.mContext = context;
+        this.mRealm = realm;
     }
 }

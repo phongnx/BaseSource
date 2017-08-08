@@ -18,8 +18,8 @@ public class PreferencesHelper {
     }
 
     public void saveUserId(String user_id){
-        SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putString(USER_ID, user_id);
-        e.commit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(USER_ID, user_id);
+        editor.commit();
     }
 }
