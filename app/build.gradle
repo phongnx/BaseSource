@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
-// For Realm
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.base"
         minSdkVersion 16
@@ -37,8 +35,8 @@ android {
 
     /* Exclude duplicate licenses */
     packagingOptions {
-        pickFirst  'META-INF/license.txt'
-        pickFirst  'META-INF/license'
+        pickFirst 'META-INF/license.txt'
+        pickFirst 'META-INF/license'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/license.txt'
         exclude 'META-INF/LICENSE'
@@ -69,21 +67,20 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.android.support:multidex:1.0.1'
     // Utility Library
-    compile 'com.github.phongnx:Utility:1.0'
+    compile 'com.github.phongnx:Utility:1.01'
     // Setup Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     // RxAndroid
     compile 'io.reactivex.rxjava2:rxandroid:2.+'
     compile 'io.reactivex.rxjava2:rxjava:2.1.2'
     // Glide image loader
-    compile 'com.github.bumptech.glide:glide:4.0.0-RC1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0-RC1'
+    compile 'com.github.bumptech.glide:glide:4.2.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.2.0'
+    // Material dialog
     compile 'com.afollestad.material-dialogs:core:0.9.4.5'
-    // Dimension convert support multi screen
-    compile 'com.intuit.sdp:sdp-android:1.0.4'
     // Bind view Library
     compile 'com.jakewharton:butterknife:8.8.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.0'

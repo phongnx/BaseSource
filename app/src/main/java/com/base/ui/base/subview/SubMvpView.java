@@ -1,8 +1,11 @@
-package com.base.ui.base;
+package com.base.ui.base.subview;
 
 /**
  * Created by Phong on 3/24/2017.
  */
+
+import com.base.ui.base.BaseMvpView;
+import com.base.ui.base.MvpView;
 
 /**
  * Base interface that any class that wants to act as a View in the MVP (Model View Presenter)

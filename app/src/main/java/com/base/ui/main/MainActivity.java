@@ -18,11 +18,18 @@ import com.base.ui.base.BaseActivity;
 import com.base.utils.Utils;
 import com.utility.RuntimePermissions;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements MainMvpView, View.OnClickListener {
+
+public class MainActivity extends BaseActivity implements MainMvpView {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
     private Context context;
-    private Toolbar toolbar;
-    private FloatingActionButton fab;
 
     private MainPresenter mainPresenter;
 
@@ -38,11 +45,7 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
 
         // --
         initView();
-        initializeControls();
         checkPermissions();
-
-        //
-        fab.setOnClickListener(this);
     }
 
     // Check permission in android 6.0 and above
@@ -54,10 +57,8 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
     }
 
     public void initView() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,18 +67,13 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
             }
         });
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
     }
 
-    private void initializeControls() {
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-    }
-
     public void closeMenu() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     @Override
@@ -91,11 +87,15 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
         Utils.showToast(context, message);
     }
 
+    @OnClick(R.id.fab)
+    void login() {
+        mainPresenter.login("phongnx@gmail.com", "123456", "abc");
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -121,15 +121,4 @@ public class MainActivity extends BaseActivity implements MainMvpView, View.OnCl
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fab:
-                mainPresenter.login("phongnx@gmail.com", "123456", "abc");
-                break;
-
-            default:
-                break;
-        }
-    }
 }

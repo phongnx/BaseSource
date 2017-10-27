@@ -1,17 +1,21 @@
-package com.base.data.network;
+package com.base.data.remote;
 
+
+import com.base.data.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -28,21 +32,21 @@ public interface RemoteApiService {
 
     @FormUrlEncoded
     @POST("user/login")
-    Call<ResponseBody> login(@Field("email") String email,
-                             @Field("password") String password,
-                             @Field("android_push_key") String android_push_key);
+    Observable<User> login(@Field("email") String email,
+                           @Field("password") String password,
+                           @Field("android_push_key") String android_push_key);
 
     @GET("user/list")
-    Call<ResponseBody> userList();
+    Observable<List<User>> userList();
 
     @FormUrlEncoded
     @Multipart
     @POST("user/register")
-    Call<ResponseBody> register(@Field("full_name") String full_name,
-                                @Field("email") String email,
-                                @Field("password") String password,
-                                @Field("android_push_key") String android_push_key,
-                                @Part MultipartBody.Part file);
+    Observable<User> register(@Field("full_name") String full_name,
+                              @Field("email") String email,
+                              @Field("password") String password,
+                              @Field("android_push_key") String android_push_key,
+                              @Part MultipartBody.Part file);
 
 
     class Creator {
@@ -63,7 +67,7 @@ public interface RemoteApiService {
             return new Retrofit.Builder()
                     .baseUrl(ENDPOINT)
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(client)
                     .build();
 

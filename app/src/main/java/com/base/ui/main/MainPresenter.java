@@ -1,8 +1,11 @@
 package com.base.ui.main;
 
 
-import com.base.data.network.ApiResult;
+import com.base.data.remote.ApiResult;
+import com.base.data.remote.helper.LoginHelper;
 import com.base.ui.base.BasePresenter;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by Phong on 2/2/2017.
@@ -10,9 +13,17 @@ import com.base.ui.base.BasePresenter;
 
 public class MainPresenter extends BasePresenter<MainMvpView> implements ApiResult {
     private LoginHelper mLoginHelper;
+    private CompositeDisposable mCompositeDisposable;
 
     public MainPresenter() {
-        mLoginHelper = new LoginHelper(this);
+        mCompositeDisposable = new CompositeDisposable();
+        mLoginHelper = new LoginHelper(mCompositeDisposable, this);
+    }
+
+    @Override
+    public void detachView() {
+        mCompositeDisposable.clear();
+        super.detachView();
     }
 
     public void initData() {

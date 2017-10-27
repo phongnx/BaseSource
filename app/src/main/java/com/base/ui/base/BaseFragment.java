@@ -11,7 +11,6 @@ import android.view.View;
  */
 
 public abstract class BaseFragment extends Fragment implements BaseMvpView {
-
     private BaseActivity mActivity;
 
     @Override

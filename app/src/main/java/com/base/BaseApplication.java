@@ -5,6 +5,7 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 import com.base.data.ApplicationModules;
+import com.base.utils.Utils;
 import com.utility.DebugLog;
 
 
@@ -27,4 +28,8 @@ public class BaseApplication extends Application {
         MultiDex.install(this);
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+    }
 }

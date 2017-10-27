@@ -1,4 +1,4 @@
-package com.base.data.network;
+package com.base.data.remote;
 
 /**
  * Created by Phong on 11/9/2016.

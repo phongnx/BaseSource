@@ -13,6 +13,9 @@ import android.widget.EditText;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.R;
+import com.base.ui.base.subview.BaseSubView;
+import com.base.ui.base.subview.LifeCycle;
+import com.base.ui.base.subview.SubViewLifeCycleHelper;
 import com.base.utils.Utils;
 import com.utility.DebugLog;
 
@@ -24,6 +27,7 @@ import com.utility.DebugLog;
 public abstract class BaseActivity extends AppCompatActivity implements BaseMvpView, BaseFragment.Callback {
     private MaterialDialog mProgressDialog;
     private MaterialDialog mAlertDialog;
+    private SubViewLifeCycleHelper mSubViewLifeCycleHelper;
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -65,6 +69,13 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
 
     @Override
     public void onFragmentDetached(String tag) {
+    }
+
+    public void attachSubView(BaseSubView baseSubView) {
+        if (mSubViewLifeCycleHelper == null) {
+            mSubViewLifeCycleHelper = new SubViewLifeCycleHelper();
+        }
+        mSubViewLifeCycleHelper.attach(baseSubView);
     }
 
     @Override
@@ -123,12 +134,43 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        updateLifeCycleForSubViews(LifeCycle.ON_START);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateLifeCycleForSubViews(LifeCycle.ON_RESUME);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateLifeCycleForSubViews(LifeCycle.ON_PAUSE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        updateLifeCycleForSubViews(LifeCycle.ON_STOP);
+    }
+
+    @Override
     protected void onDestroy() {
         hideLoading();
         hideAlertDialog();
         mAlertDialog = null;
         mProgressDialog = null;
+        updateLifeCycleForSubViews(LifeCycle.ON_DESTROY);
         super.onDestroy();
+    }
+
+    private void updateLifeCycleForSubViews(LifeCycle lifeCycle) {
+        if (mSubViewLifeCycleHelper != null) {
+            mSubViewLifeCycleHelper.onLifeCycle(lifeCycle);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -138,4 +180,5 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
         }
         overridePendingTransition(R.anim.slide_in_from_right, R.anim.fade_out);
     }
+
 }

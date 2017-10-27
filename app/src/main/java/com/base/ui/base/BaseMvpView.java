@@ -6,7 +6,7 @@ import android.content.Context;
  * Created by Phong on 11/9/2016.
  */
 
-public interface BaseMvpView extends MvpView{
+public interface BaseMvpView extends MvpView {
 
     Context getContext();
 
@@ -19,6 +19,5 @@ public interface BaseMvpView extends MvpView{
     void showAlertDialog(String message);
 
     void hideAlertDialog();
-
 
 }

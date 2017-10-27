@@ -10,35 +10,39 @@ import android.widget.TextView;
 import com.base.R;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by Phong on 2/2/2017.
  */
 
-public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder> {
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private Context context;
-    private ArrayList<String> lists;
+    private List<String> lists;
 
     public Adapter(Context context, ArrayList<String> lists) {
         this.context = context;
         this.lists = lists;
     }
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tvTitle;
 
-        public MyViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.view_content_main, parent, false));
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.view_content_main, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
     }
 

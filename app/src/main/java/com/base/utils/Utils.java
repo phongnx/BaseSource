@@ -7,7 +7,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.R;
-import com.base.ui.base.GlideApp;
+import com.base.ui.base.glide.GlideApp;
+import com.bumptech.glide.Glide;
 
 import java.util.Random;
 
@@ -64,15 +65,16 @@ public class Utils {
         return builder.toString();
     }
 
-    public static void loadImageWithGlide(Context context, ImageView imageView, String url, int place_holder) {
-        if (url == null || url.isEmpty() || context == null) {
+    public static void loadImageWithGlide(Context context, Object model, int place_holder, ImageView target) {
+        if (model == null || context == null) {
             return;
         }
         GlideApp.with(context)
-                .load(url)
+                .load(model)
                 .placeholder(place_holder)
-                .centerCrop(context)
-                .into(imageView);
+                .error(place_holder)
+                .centerCrop()
+                .into(target);
     }
 
 }

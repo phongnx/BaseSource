@@ -1,4 +1,4 @@
-package com.base.ui.base;
+package com.base.ui.base.glide;
 
 import android.content.Context;
 

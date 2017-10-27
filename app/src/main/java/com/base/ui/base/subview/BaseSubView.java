@@ -1,4 +1,4 @@
-package com.base.ui.base;
+package com.base.ui.base.subview;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import com.base.ui.base.BaseActivity;
+import com.base.ui.base.MvpView;
 
 /**
  * Created by Phong on 3/24/2017.
@@ -109,5 +112,6 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
         mParentMvpView = mvpView;
     }
 
-    protected abstract void init();
+    protected void init() {
+    }
 }
