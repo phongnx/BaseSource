@@ -38,8 +38,8 @@ public class LoginHelper {
 
     public void login(String email, String password, String push_key) {
         Disposable disposable = mDataManager.login(email, password, push_key)
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<User>() {
                     @Override
                     public void accept(User user) throws Exception {

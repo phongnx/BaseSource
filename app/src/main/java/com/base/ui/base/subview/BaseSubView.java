@@ -25,26 +25,31 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
 
     public BaseSubView(@NonNull Context context) {
         super(context);
+        init(context);
     }
 
     public BaseSubView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(context);
     }
 
     public BaseSubView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public BaseSubView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init(context);
     }
 
     private void init(Context context) {
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             mActivity = activity;
-            activity.onFragmentAttached();
+            activity.attachSubView(this);
+            onCreate();
         }
     }
 
@@ -86,11 +91,15 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
     }
 
     @Override
-    public void onPause() {
+    public void onStart() {
     }
 
     @Override
     public void onResume() {
+    }
+
+    @Override
+    public void onPause() {
     }
 
     @Override

@@ -15,6 +15,8 @@ import com.base.ui.base.MvpView;
 public interface SubMvpView extends BaseMvpView {
     void onCreate();
 
+    void onStart();
+
     void onResume();
 
     void onPause();

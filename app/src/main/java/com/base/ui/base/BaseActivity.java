@@ -31,25 +31,29 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
-        View view = getCurrentFocus();
-        boolean ret = super.dispatchTouchEvent(event);
+        try {
+            View view = getCurrentFocus();
+            boolean ret = super.dispatchTouchEvent(event);
+            if (view instanceof EditText) {
+                View w = getCurrentFocus();
+                int scrcoords[] = new int[2];
+                w.getLocationOnScreen(scrcoords);
+                float x = event.getRawX() + w.getLeft() - scrcoords[0];
+                float y = event.getRawY() + w.getTop() - scrcoords[1];
 
-        if (view instanceof EditText) {
-            View w = getCurrentFocus();
-            int scrcoords[] = new int[2];
-            w.getLocationOnScreen(scrcoords);
-            float x = event.getRawX() + w.getLeft() - scrcoords[0];
-            float y = event.getRawY() + w.getTop() - scrcoords[1];
-
-            if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom())) {
-                try {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
-                } catch (Exception e) {
+                if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom())) {
+                    try {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
+                    } catch (Exception e) {
+                    }
                 }
             }
+            return ret;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return ret;
+        return false;
     }
 
     @Override
