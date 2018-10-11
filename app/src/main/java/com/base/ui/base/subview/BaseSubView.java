@@ -49,7 +49,6 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
             BaseActivity activity = (BaseActivity) context;
             mActivity = activity;
             activity.attachSubView(this);
-            onCreate();
         }
     }
 
