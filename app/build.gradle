@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.base"
         minSdkVersion 16
@@ -15,6 +15,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -31,6 +32,11 @@ android {
 
     dexOptions {
         javaMaxHeapSize "4g"
+    }
+
+    lintOptions {
+        ignore 'ExtraTranslation', 'MissingTranslation'
+        abortOnError false
     }
 
 }
@@ -59,6 +65,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     // Utility Library
     implementation 'com.github.phongnx:Utility:1.1.5'
+    implementation 'com.blankj:utilcode:1.16.3'
     // Setup Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
@@ -72,7 +79,14 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     // Material dialog
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    // Rx Permission
+    implementation 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5'
     // Bind view Library
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    // Event Bus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    // GSon
+    implementation 'com.google.code.gson:gson:2.8.4'
 }

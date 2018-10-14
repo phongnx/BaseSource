@@ -1,15 +1,18 @@
 package com.base.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.R;
 import com.base.ui.base.glide.GlideApp;
-import com.bumptech.glide.Glide;
 
+import java.util.List;
 import java.util.Random;
 
 
@@ -52,19 +55,6 @@ public class Utils {
         }
     }
 
-    @NonNull
-    public static String getRandomId() {
-        String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        long currentTime = System.currentTimeMillis();
-        StringBuilder builder = new StringBuilder(String.valueOf(currentTime));
-        builder.append("_");
-        for (int i = 0; i < 20; i++) {
-            Random random = new Random();
-            builder.append(possible.charAt(random.nextInt(possible.length())));
-        }
-        return builder.toString();
-    }
-
     public static void loadImageWithGlide(Context context, Object model, int place_holder, ImageView target) {
         if (model == null || context == null) {
             return;
@@ -75,6 +65,20 @@ public class Utils {
                 .error(place_holder)
                 .centerCrop()
                 .into(target);
+    }
+
+    public static boolean isEmptyList(List list) {
+        return list == null || list.isEmpty();
+    }
+
+    public static Drawable getResourceByName(Context context, String name) {
+        if (context == null || TextUtils.isEmpty(name)) {
+            return null;
+        }
+        Resources resources = context.getResources();
+        final int resourceId = resources.getIdentifier(name, "drawable",
+                context.getPackageName());
+        return resources.getDrawable(resourceId);
     }
 
 }

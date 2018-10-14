@@ -2,6 +2,7 @@ package com.base.ui.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -32,24 +33,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         try {
-            View view = getCurrentFocus();
-            boolean ret = super.dispatchTouchEvent(event);
-            if (view instanceof EditText) {
-                View w = getCurrentFocus();
-                int scrcoords[] = new int[2];
-                w.getLocationOnScreen(scrcoords);
-                float x = event.getRawX() + w.getLeft() - scrcoords[0];
-                float y = event.getRawY() + w.getTop() - scrcoords[1];
-
-                if (event.getAction() == MotionEvent.ACTION_UP && (x < w.getLeft() || x >= w.getRight() || y < w.getTop() || y > w.getBottom())) {
-                    try {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                View v = getCurrentFocus();
+                if ( v instanceof EditText) {
+                    Rect outRect = new Rect();
+                    v.getGlobalVisibleRect(outRect);
+                    if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                        v.clearFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
-                    } catch (Exception e) {
+                        assert imm != null;
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     }
                 }
             }
-            return ret;
+            return super.dispatchTouchEvent(event);
         } catch (Exception e) {
             e.printStackTrace();
         }
