@@ -9,30 +9,33 @@ import android.support.v7.widget.Toolbar;
 
 import com.base.R;
 import com.base.ui.base.BaseActivity;
+import com.base.ui.base.BasePresenter;
 import com.base.utils.Utils;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class MainActivity extends BaseActivity implements MainMvpView {
+public class MainActivity extends BaseActivity<MainMvpPresenter> implements MainMvpView {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
     private Context mContext;
-    private MainPresenter mainPresenter;
+
+    @Override
+    protected BasePresenter onRegisterPresenter() {
+        return new MainPresenter(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mContext = MainActivity.this;
-
-        // Initialize Presenter
-        mainPresenter = new MainPresenter();
-        mainPresenter.attachView(this);
+        ButterKnife.bind(this);
 
         // --
         initView();
@@ -50,6 +53,11 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    @OnClick(R.id.fab)
+    void onClick() {
+        mPresenter.login("", "");
+    }
+
     @Override
     public void loginSuccess() {
         // Do somethings
@@ -61,11 +69,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         Utils.showToast(mContext, message);
     }
 
-    @OnClick(R.id.fab)
-    void login() {
-        mainPresenter.login("phongnx@gmail.com", "123456", "abc");
-    }
-
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
@@ -73,12 +76,6 @@ public class MainActivity extends BaseActivity implements MainMvpView {
         } else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        mainPresenter.detachView();
-        super.onDestroy();
     }
 
 }

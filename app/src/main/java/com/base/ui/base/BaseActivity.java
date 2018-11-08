@@ -25,20 +25,35 @@ import com.utility.DebugLog;
  * Created by Phong on 11/9/2016.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements BaseMvpView, BaseFragment.Callback {
+public abstract class BaseActivity<P extends MvpPresenter> extends AppCompatActivity implements BaseMvpView {
     private MaterialDialog mProgressDialog;
     private MaterialDialog mAlertDialog;
     private SubViewLifeCycleHelper mSubViewLifeCycleHelper;
+    protected P mPresenter;
+
+    protected abstract BasePresenter onRegisterPresenter();
+
+    private void initPresenter() {
+        try {
+            BasePresenter basePresenter = onRegisterPresenter();
+            if (basePresenter != null) {
+                basePresenter.attachView(this);
+                mPresenter = (P) basePresenter;
+            }
+        } catch (Exception e) {
+            DebugLog.loge(e);
+        }
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         try {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 View v = getCurrentFocus();
-                if ( v instanceof EditText) {
+                if (v instanceof EditText) {
                     Rect outRect = new Rect();
                     v.getGlobalVisibleRect(outRect);
-                    if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                         v.clearFocus();
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         assert imm != null;
@@ -58,18 +73,11 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
         super.onCreate(savedInstanceState);
         setupWindowAnimations();
         createAlertDialog();
+        initPresenter();
     }
 
     private void createAlertDialog() {
         mAlertDialog = Utils.createAlertDialog(this);
-    }
-
-    @Override
-    public void onFragmentAttached() {
-    }
-
-    @Override
-    public void onFragmentDetached(String tag) {
     }
 
     public void attachSubView(BaseSubView baseSubView) {
@@ -165,6 +173,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseMvpV
         mAlertDialog = null;
         mProgressDialog = null;
         updateLifeCycleForSubViews(LifeCycle.ON_DESTROY);
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
         super.onDestroy();
     }
 

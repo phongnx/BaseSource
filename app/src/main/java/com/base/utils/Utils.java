@@ -3,17 +3,16 @@ package com.base.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.base.R;
-import com.base.ui.base.glide.GlideApp;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
-import java.util.Random;
 
 
 /**
@@ -59,16 +58,14 @@ public class Utils {
         if (model == null || context == null) {
             return;
         }
-        GlideApp.with(context)
-                .load(model)
+        RequestOptions requestOptions = new RequestOptions()
                 .placeholder(place_holder)
                 .error(place_holder)
-                .centerCrop()
+                .centerCrop();
+        Glide.with(context)
+                .load(model)
+                .apply(requestOptions)
                 .into(target);
-    }
-
-    public static boolean isEmptyList(List list) {
-        return list == null || list.isEmpty();
     }
 
     public static Drawable getResourceByName(Context context, String name) {

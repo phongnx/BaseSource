@@ -4,19 +4,40 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.view.View;
+
+import com.utility.DebugLog;
 
 /**
  * Created by Phong on 3/24/2017.
  */
 
-public abstract class BaseFragment extends Fragment implements BaseMvpView {
+public abstract class BaseFragment<P extends MvpPresenter> extends Fragment implements BaseMvpView {
     private BaseActivity mActivity;
+    protected P mPresenter;
+
+    protected abstract BasePresenter onRegisterPresenter();
+
+    public BaseActivity getBaseActivity() {
+        return mActivity;
+    }
+
+    private void initPresenter() {
+        try {
+            BasePresenter basePresenter = onRegisterPresenter();
+            if (basePresenter != null) {
+                basePresenter.attachView(this);
+                mPresenter = (P) basePresenter;
+            }
+        } catch (Exception e) {
+            DebugLog.loge(e);
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(false);
+        initPresenter();
     }
 
     @Override
@@ -25,16 +46,8 @@ public abstract class BaseFragment extends Fragment implements BaseMvpView {
         if (context instanceof BaseActivity) {
             BaseActivity activity = (BaseActivity) context;
             mActivity = activity;
-            activity.onFragmentAttached();
         }
     }
-
-    public BaseActivity getBaseActivity() {
-        return mActivity;
-    }
-
-
-    protected abstract void init(View view);
 
     @Override
     public void showLoading() {
@@ -77,13 +90,10 @@ public abstract class BaseFragment extends Fragment implements BaseMvpView {
         if (mActivity != null) {
             mActivity.hideLoading();
         }
+        if (mPresenter != null) {
+            mPresenter.detachView();
+        }
         super.onDestroy();
     }
 
-    public interface Callback {
-
-        void onFragmentAttached();
-
-        void onFragmentDetached(String tag);
-    }
 }
