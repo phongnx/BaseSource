@@ -1,11 +1,18 @@
 package com.base.ui.base;
 
+import android.content.Context;
+
 /**
  * Created by Phong on 11/9/2016.
  */
 
-public class BasePresenter<V extends MvpView> implements Presenter<V>{
+public abstract class BasePresenter<V extends MvpView> implements MvpPresenter<V> {
     private V mvpView;
+    protected Context mContext;
+
+    public BasePresenter(Context context) {
+        this.mContext = context;
+    }
 
     @Override
     public void attachView(V mvpView) {
@@ -33,7 +40,7 @@ public class BasePresenter<V extends MvpView> implements Presenter<V>{
 
     private static class MvpViewNotAttachedException extends RuntimeException {
         public MvpViewNotAttachedException() {
-            super("Please call Presenter.attachView(MvpView) before requesting data to presenter");
+            super("Please call MvpPresenter.attachView(MvpView) before requesting data to presenter");
         }
     }
 }

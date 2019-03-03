@@ -7,7 +7,10 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.base.ui.base.BaseActivity;
+import com.base.ui.base.BasePresenter;
 import com.base.ui.base.MvpView;
+import com.base.ui.base.MvpPresenter;
+import com.utility.DebugLog;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
@@ -18,11 +21,28 @@ import androidx.annotation.StyleRes;
  * Created by Phong on 3/24/2017.
  */
 
-public abstract class BaseSubView extends FrameLayout implements SubMvpView {
-
+public abstract class BaseSubView<P extends MvpPresenter> extends FrameLayout implements SubMvpView {
     private BaseActivity mActivity;
-
     private MvpView mParentMvpView;
+    protected P mPresenter;
+
+    protected abstract BasePresenter onRegisterPresenter();
+
+    public BaseActivity getBaseActivity() {
+        return mActivity;
+    }
+
+    private void initPresenter() {
+        try {
+            BasePresenter basePresenter = onRegisterPresenter();
+            if (basePresenter != null) {
+                basePresenter.attachView(this);
+                mPresenter = (P) basePresenter;
+            }
+        } catch (Exception e) {
+            DebugLog.loge(e);
+        }
+    }
 
     public BaseSubView(@NonNull Context context) {
         super(context);
@@ -51,10 +71,7 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
             mActivity = activity;
             activity.attachSubView(this);
         }
-    }
-
-    public BaseActivity getBaseActivity() {
-        return mActivity;
+        initPresenter();
     }
 
     @Override
@@ -113,6 +130,9 @@ public abstract class BaseSubView extends FrameLayout implements SubMvpView {
         }
         if (mActivity != null) {
             mActivity.hideLoading();
+        }
+        if (mPresenter != null) {
+            mPresenter.detachView();
         }
     }
 

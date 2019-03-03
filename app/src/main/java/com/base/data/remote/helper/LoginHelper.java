@@ -40,19 +40,13 @@ public class LoginHelper {
         Disposable disposable = mDataManager.login(email, password, push_key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<User>() {
-                    @Override
-                    public void accept(User user) throws Exception {
-                        if (user != null && mApiResult != null) {
-                            mApiResult.onSuccess("");
-                        }
+                .subscribe(user -> {
+                    if (user != null && mApiResult != null) {
+                        mApiResult.onSuccess("");
                     }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(Throwable throwable) throws Exception {
-                        if (mApiResult != null) {
-                            mApiResult.onError(throwable.getMessage());
-                        }
+                }, throwable -> {
+                    if (mApiResult != null) {
+                        mApiResult.onError(throwable.getMessage());
                     }
                 });
 

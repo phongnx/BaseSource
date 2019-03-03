@@ -10,6 +10,7 @@ import com.base.data.ApplicationModules;
 import com.base.ui.main.MainActivity;
 import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.CrashUtils;
+import com.blankj.utilcode.util.Utils;
 import com.utility.DebugLog;
 import com.utility.SharedPreference;
 
@@ -28,6 +29,7 @@ public class BaseApplication extends MultiDexApplication {
         DebugLog.DEBUG = BuildConfig.DEBUG;
         ApplicationModules.getInstant().initModules(getApplicationContext());
 
+        Utils.init(this);
         if (!BuildConfig.DEBUG) {
             initCrash();
         }
