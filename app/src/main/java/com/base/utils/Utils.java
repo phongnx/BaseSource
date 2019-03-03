@@ -3,7 +3,6 @@ package com.base.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -13,7 +12,6 @@ import com.base.R;
 import com.base.ui.base.glide.GlideApp;
 
 import java.util.List;
-import java.util.Random;
 
 
 /**

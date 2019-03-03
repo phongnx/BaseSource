@@ -5,7 +5,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.support.multidex.MultiDexApplication;
 
 import com.base.data.ApplicationModules;
 import com.base.ui.main.MainActivity;
@@ -13,6 +12,8 @@ import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.CrashUtils;
 import com.utility.DebugLog;
 import com.utility.SharedPreference;
+
+import androidx.multidex.MultiDexApplication;
 
 
 /**
