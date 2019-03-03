@@ -5,8 +5,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -19,6 +17,9 @@ import com.base.ui.base.subview.LifeCycle;
 import com.base.ui.base.subview.SubViewLifeCycleHelper;
 import com.base.utils.Utils;
 import com.utility.DebugLog;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 /**

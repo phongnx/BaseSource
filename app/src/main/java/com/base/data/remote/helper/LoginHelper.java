@@ -1,25 +1,13 @@
 package com.base.data.remote.helper;
 
-import android.database.Observable;
-import android.os.AsyncTask;
-
 import com.base.data.ApplicationModules;
-import com.base.data.models.User;
-import com.base.data.remote.DataManager;
-import com.base.data.local.preference.PreferencesHelper;
 import com.base.data.remote.ApiResult;
-
-import org.json.JSONObject;
+import com.base.data.remote.DataManager;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Phong on 3/1/2017.
