@@ -17,6 +17,7 @@ import com.base.ui.base.subview.LifeCycle;
 import com.base.ui.base.subview.SubViewLifeCycleHelper;
 import com.base.utils.Utils;
 import com.utility.DebugLog;
+import com.utility.UtilsLib;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -164,6 +165,7 @@ public abstract class BaseActivity<P extends MvpPresenter> extends AppCompatActi
     @Override
     protected void onStop() {
         super.onStop();
+        UtilsLib.showOrHideKeyboard(this, false);
         updateLifeCycleForSubViews(LifeCycle.ON_STOP);
     }
 
